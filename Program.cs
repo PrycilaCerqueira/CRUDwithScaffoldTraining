@@ -1,6 +1,14 @@
-using CRUDwithScaffoldTraining.Components;
+﻿using CRUDwithScaffoldTraining.Components;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using CRUDwithScaffoldTraining.Data;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<ProductContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("ProductContext") ?? throw new InvalidOperationException("Connection string 'ProductContext' not found.")));
+
+builder.Services.AddQuickGridEntityFrameworkAdapter();;
 
 // Add services to the container.
 builder.Services.AddRazorComponents()

@@ -1,0 +1,89 @@
+﻿@page "/products/delete"
+@inject CRUDwithScaffoldTraining.Data.ProductContext DB
+@using CRUDwithScaffoldTraining.Models
+@inject NavigationManager NavigationManager
+@using Microsoft.EntityFrameworkCore
+
+<PageTitle>Delete</PageTitle>
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Product</h4>
+    <hr />
+    @if (product is null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else {
+        <dl class="row">
+            <dt class="col-sm-2">Name</dt>
+            <dd class="col-sm-10">@product.Name</dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-2">Description</dt>
+            <dd class="col-sm-10">@product.Description</dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-2">Maker</dt>
+            <dd class="col-sm-10">@product.Maker</dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-2">SKU</dt>
+            <dd class="col-sm-10">@product.SKU</dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-2">Qty_InStock</dt>
+            <dd class="col-sm-10">@product.Qty_InStock</dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-2">UnitPrice</dt>
+            <dd class="col-sm-10">@product.UnitPrice</dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-2">UnitPrice_Total</dt>
+            <dd class="col-sm-10">@product.UnitPrice_Total</dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-2">Qty_Received</dt>
+            <dd class="col-sm-10">@product.Qty_Received</dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-2">CostPrice</dt>
+            <dd class="col-sm-10">@product.CostPrice</dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-2">CostPrice_Total</dt>
+            <dd class="col-sm-10">@product.CostPrice_Total</dd>
+        </dl>
+        <EditForm method="post" Model="product" OnValidSubmit="DeleteProduct" FormName="delete" Enhance>
+            <button type="submit" class="btn btn-danger" disabled="@(product is null)">Delete</button> |
+            <a href="/products">Back to List</a>
+        </EditForm>
+    }
+</div>
+
+@code {
+    Product? product;
+
+    [SupplyParameterFromQuery]
+    public int Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        product = await DB.Product.FirstOrDefaultAsync(m => m.Id == Id);
+
+        if (product is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+
+    public async Task DeleteProduct()
+    {
+        DB.Product.Remove(product!);
+        await DB.SaveChangesAsync();
+        NavigationManager.NavigateTo("/products");
+    }
+}

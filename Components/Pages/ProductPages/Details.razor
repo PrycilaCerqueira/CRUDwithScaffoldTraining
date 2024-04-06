@@ -1,0 +1,63 @@
+﻿@page "/products/details"
+@inject CRUDwithScaffoldTraining.Data.ProductContext DB
+@using CRUDwithScaffoldTraining.Models
+@inject NavigationManager NavigationManager
+@using Microsoft.EntityFrameworkCore
+
+<PageTitle>Details</PageTitle>
+
+<h1>Details</h1>
+
+<div>
+    <h4>Product</h4>
+    <hr />
+    @if (product is null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else {
+        <dl class="row">
+            <dt class="col-sm-2">Name</dt>
+            <dd class="col-sm-10">@product.Name</dd>
+            <dt class="col-sm-2">Description</dt>
+            <dd class="col-sm-10">@product.Description</dd>
+            <dt class="col-sm-2">Maker</dt>
+            <dd class="col-sm-10">@product.Maker</dd>
+            <dt class="col-sm-2">SKU</dt>
+            <dd class="col-sm-10">@product.SKU</dd>
+            <dt class="col-sm-2">Qty_InStock</dt>
+            <dd class="col-sm-10">@product.Qty_InStock</dd>
+            <dt class="col-sm-2">UnitPrice</dt>
+            <dd class="col-sm-10">@product.UnitPrice</dd>
+            <dt class="col-sm-2">UnitPrice_Total</dt>
+            <dd class="col-sm-10">@product.UnitPrice_Total</dd>
+            <dt class="col-sm-2">Qty_Received</dt>
+            <dd class="col-sm-10">@product.Qty_Received</dd>
+            <dt class="col-sm-2">CostPrice</dt>
+            <dd class="col-sm-10">@product.CostPrice</dd>
+            <dt class="col-sm-2">CostPrice_Total</dt>
+            <dd class="col-sm-10">@product.CostPrice_Total</dd>
+        </dl>
+        <div>
+            <a href="@($"/products/edit?id={product.Id}")">Edit</a> |
+            <a href="@($"/products")">Back to List</a>
+        </div>
+    }
+</div>
+
+@code {
+    Product? product;
+
+    [SupplyParameterFromQuery]
+    public int Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        product = await DB.Product.FirstOrDefaultAsync(m => m.Id == Id);
+
+        if (product is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+}

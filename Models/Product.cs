@@ -4,7 +4,7 @@ namespace CRUDwithScaffoldTraining.Models
 {
     public class Product
     {
-        public int Prod_Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public string? Description { get; set; }
         public string? Maker { get; set; }
@@ -14,7 +14,7 @@ namespace CRUDwithScaffoldTraining.Models
         public double? UnitPrice { get; set; }
         public double? UnitPrice_Total {  get; set; }
         
-        public int?  Qty_Purchased { get; set; }
+        public int?  Qty_Received { get; set; }
         public double? CostPrice { get; set; }
         public double? CostPrice_Total { get; set; }
 
