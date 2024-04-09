@@ -1,0 +1,111 @@
+﻿@page "/PurchaseOrders/edit"
+@inject CRUDwithScaffoldTraining.Data.ProductContext DB
+@using CRUDwithScaffoldTraining.Models
+@inject NavigationManager NavigationManager
+@using Microsoft.EntityFrameworkCore
+
+<PageTitle>Edit</PageTitle>
+
+<h1>Edit</h1>
+
+<h4>PurchaseOrder</h4>
+<hr />
+@if (PurchaseOrder is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-4">
+            <EditForm method="post" Model="PurchaseOrder" OnValidSubmit="UpdatePurchaseOrder" FormName="edit" Enhance>
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <input type="hidden" name="PurchaseOrder.Id" value="@PurchaseOrder.Id" />
+                <div class="mb-3">
+                    <label for="quote" class="form-label">Quote:</label>
+                    <InputText id="quote" @bind-Value="PurchaseOrder.Quote" class="form-control" />
+                    <ValidationMessage For="() => PurchaseOrder.Quote" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="invoice" class="form-label">Invoice:</label>
+                    <InputText id="invoice" @bind-Value="PurchaseOrder.Invoice" class="form-control" />
+                    <ValidationMessage For="() => PurchaseOrder.Invoice" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="supplier" class="form-label">Supplier:</label>
+                    <InputText id="supplier" @bind-Value="PurchaseOrder.Supplier" class="form-control" />
+                    <ValidationMessage For="() => PurchaseOrder.Supplier" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="phonenumber" class="form-label">PhoneNumber:</label>
+                    <InputNumber id="phonenumber" @bind-Value="PurchaseOrder.PhoneNumber" class="form-control" />
+                    <ValidationMessage For="() => PurchaseOrder.PhoneNumber" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email:</label>
+                    <InputText id="email" @bind-Value="PurchaseOrder.Email" class="form-control" />
+                    <ValidationMessage For="() => PurchaseOrder.Email" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="salesrep_name" class="form-label">SalesRep_Name:</label>
+                    <InputText id="salesrep_name" @bind-Value="PurchaseOrder.SalesRep_Name" class="form-control" />
+                    <ValidationMessage For="() => PurchaseOrder.SalesRep_Name" class="text-danger" />
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </EditForm>
+        </div>
+    </div>
+}
+
+<div>
+    <a href="/purchaseorders">Back to List</a>
+</div>
+
+@code {
+    [SupplyParameterFromQuery]
+    public int Id { get; set; }
+
+    [SupplyParameterFromForm]
+    public PurchaseOrder? PurchaseOrder { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        PurchaseOrder ??= await DB.PurchaseOrder.FirstOrDefaultAsync(m => m.Id == Id);
+
+        if (PurchaseOrder is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more details, see https://aka.ms/RazorPagesCRUD.
+    public async Task UpdatePurchaseOrder()
+    {
+        DB.Attach(PurchaseOrder!).State = EntityState.Modified;
+
+        try
+        {
+            await DB.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!PurchaseOrderExists(PurchaseOrder!.Id))
+            {
+                NavigationManager.NavigateTo("notfound");
+            }
+            else
+            {
+                throw;
+            }
+        }
+
+        NavigationManager.NavigateTo("/purchaseorders");
+    }
+
+    bool PurchaseOrderExists(int id)
+    {
+        return DB.PurchaseOrder.Any(e => e.Id == id);
+    }
+}

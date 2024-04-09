@@ -1,0 +1,27 @@
+﻿@page "/purchaseorders"
+@using Microsoft.AspNetCore.Components.QuickGrid
+@inject CRUDwithScaffoldTraining.Data.ProductContext DB
+@using CRUDwithScaffoldTraining.Models
+
+<PageTitle>Index</PageTitle>
+
+<h1>Index</h1>
+
+<p>
+    <a href="purchaseorders/create">Create New</a>
+</p>
+
+<QuickGrid Class="table" Items="DB.PurchaseOrder">
+    <PropertyColumn Property="purchaseorder => purchaseorder.Quote" />
+    <PropertyColumn Property="purchaseorder => purchaseorder.Invoice" />
+    <PropertyColumn Property="purchaseorder => purchaseorder.Supplier" />
+    <PropertyColumn Property="purchaseorder => purchaseorder.PhoneNumber" />
+    <PropertyColumn Property="purchaseorder => purchaseorder.Email" />
+    <PropertyColumn Property="purchaseorder => purchaseorder.SalesRep_Name" />
+
+    <TemplateColumn Context="purchaseorder">
+        <a href="@($"purchaseorders/edit?id={purchaseorder.Id}")">Edit</a> |
+        <a href="@($"purchaseorders/details?id={purchaseorder.Id}")">Details</a> |
+        <a href="@($"purchaseorders/delete?id={purchaseorder.Id}")">Delete</a>
+    </TemplateColumn>
+</QuickGrid>

@@ -1,0 +1,68 @@
+﻿@page "/purchaseorders/create"
+@inject CRUDwithScaffoldTraining.Data.ProductContext DB
+@using CRUDwithScaffoldTraining.Models
+@inject NavigationManager NavigationManager
+
+<PageTitle>Create</PageTitle>
+
+<h1>Create</h1>
+
+<h4>PurchaseOrder</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <EditForm method="post" Model="PurchaseOrder" OnValidSubmit="AddPurchaseOrder" FormName="create" Enhance>
+            <DataAnnotationsValidator />
+            <ValidationSummary class="text-danger" />
+            <div class="mb-3">
+                <label for="quote" class="form-label">Quote:</label> 
+                <InputText id="quote" @bind-Value="PurchaseOrder.Quote" class="form-control" /> 
+                <ValidationMessage For="() => PurchaseOrder.Quote" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="invoice" class="form-label">Invoice:</label> 
+                <InputText id="invoice" @bind-Value="PurchaseOrder.Invoice" class="form-control" /> 
+                <ValidationMessage For="() => PurchaseOrder.Invoice" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="supplier" class="form-label">Supplier:</label> 
+                <InputText id="supplier" @bind-Value="PurchaseOrder.Supplier" class="form-control" /> 
+                <ValidationMessage For="() => PurchaseOrder.Supplier" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="phonenumber" class="form-label">PhoneNumber:</label> 
+                <InputNumber id="phonenumber" @bind-Value="PurchaseOrder.PhoneNumber" class="form-control" /> 
+                <ValidationMessage For="() => PurchaseOrder.PhoneNumber" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="email" class="form-label">Email:</label> 
+                <InputText id="email" @bind-Value="PurchaseOrder.Email" class="form-control" /> 
+                <ValidationMessage For="() => PurchaseOrder.Email" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="salesrep_name" class="form-label">SalesRep_Name:</label> 
+                <InputText id="salesrep_name" @bind-Value="PurchaseOrder.SalesRep_Name" class="form-control" /> 
+                <ValidationMessage For="() => PurchaseOrder.SalesRep_Name" class="text-danger" /> 
+            </div>        
+            <button type="submit" class="btn btn-primary">Create</button>
+        </EditForm>
+    </div>
+</div>
+
+<div>
+    <a href="/purchaseorders">Back to List</a>
+</div>
+
+@code {
+
+    [SupplyParameterFromForm]
+    public PurchaseOrder PurchaseOrder { get; set; } = new();
+
+    // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
+    public async Task AddPurchaseOrder()
+    {
+        DB.PurchaseOrder.Add(PurchaseOrder);
+        await DB.SaveChangesAsync();
+        NavigationManager.NavigateTo("/purchaseorders");
+    }
+}

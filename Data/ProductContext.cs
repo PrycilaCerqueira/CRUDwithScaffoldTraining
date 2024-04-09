@@ -16,5 +16,6 @@ namespace CRUDwithScaffoldTraining.Data
 
         public DbSet<CRUDwithScaffoldTraining.Models.Product> Product { get; set; } = default!;
         public DbSet<CRUDwithScaffoldTraining.Models.Address> Address { get; set; } = default!;
+        public DbSet<CRUDwithScaffoldTraining.Models.PurchaseOrder> PurchaseOrder { get; set; } = default!;
     }
 }
