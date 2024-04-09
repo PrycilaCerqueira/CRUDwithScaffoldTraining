@@ -6,9 +6,13 @@
         public string Quote { get; set; }
         public string Invoice { get; set; }
         public string Supplier { get; set; }
-        public List<Address> Delivery_Address { get; set; }
         public int PhoneNumber { get; set; }
         public string Email { get; set; }
         public string SalesRep_Name { get; set; }
+
+        public DateOnly eTA { get; set; }
+        public Address AddressId { get; set; }
+        public Address Delivery_Address { get; set; }
+
     }
 }
