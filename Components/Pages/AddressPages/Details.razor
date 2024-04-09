@@ -1,0 +1,57 @@
+﻿@page "/addresses/details"
+@inject CRUDwithScaffoldTraining.Data.ProductContext DB
+@using CRUDwithScaffoldTraining.Models
+@inject NavigationManager NavigationManager
+@using Microsoft.EntityFrameworkCore
+
+<PageTitle>Details</PageTitle>
+
+<h1>Details</h1>
+
+<div>
+    <h4>Address</h4>
+    <hr />
+    @if (address is null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else {
+        <dl class="row">
+            <dt class="col-sm-2">Street</dt>
+            <dd class="col-sm-10">@address.Street</dd>
+            <dt class="col-sm-2">Street_Number</dt>
+            <dd class="col-sm-10">@address.Street_Number</dd>
+            <dt class="col-sm-2">Unit</dt>
+            <dd class="col-sm-10">@address.Unit</dd>
+            <dt class="col-sm-2">City</dt>
+            <dd class="col-sm-10">@address.City</dd>
+            <dt class="col-sm-2">State</dt>
+            <dd class="col-sm-10">@address.State</dd>
+            <dt class="col-sm-2">Zipcode</dt>
+            <dd class="col-sm-10">@address.Zipcode</dd>
+            <dt class="col-sm-2">Country</dt>
+            <dd class="col-sm-10">@address.Country</dd>
+        </dl>
+        <div>
+            <a href="@($"/addresses/edit?id={address.Id}")">Edit</a> |
+            <a href="@($"/addresses")">Back to List</a>
+        </div>
+    }
+</div>
+
+@code {
+    Address? address;
+
+    [SupplyParameterFromQuery]
+    public int Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        address = await DB.Address.FirstOrDefaultAsync(m => m.Id == Id);
+
+        if (address is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+}
