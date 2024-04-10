@@ -15,4 +15,6 @@
         public Address Delivery_Address { get; set; }
 
     }
+
+    //TODO: Fix error Microsoft.Data.Sqlite.SqliteException (0x80004005): SQLite Error 1: 'no such column: p.AddressIdId'.
 }
